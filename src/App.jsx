@@ -359,7 +359,7 @@ async function uploadSRTToGoogleDrive(
 
   const apiBaseUrl =
     import.meta.env.VITE_API_URL ||
-    "http://localhost:5000";
+    "https://srt-caption-backend.onrender.com";
 
   const uploadApiKey =
     import.meta.env.VITE_UPLOAD_API_KEY;
