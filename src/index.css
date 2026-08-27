@@ -1,0 +1,1265 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100vh;
+
+  font-family:
+    Arial,
+    "Noto Sans Devanagari",
+    "Nirmala UI",
+    sans-serif;
+
+  background: #f4f7fb;
+  color: #172033;
+
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+  width: 100%;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  padding: 16px 12px;
+
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0;
+
+  font-size: 23px;
+
+  line-height: 1.25;
+
+  font-weight: 700;
+
+  color: #111827;
+}
+
+.header p {
+  margin: 5px 0 0;
+
+  font-size: 13px;
+
+  line-height: 1.4;
+
+  color: #6b7280;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.container {
+  width: 100%;
+
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  padding:
+    14px 10px 30px;
+}
+
+
+/* =========================================================
+   UPLOAD CARD
+========================================================= */
+
+.upload-card {
+  width: 100%;
+
+  padding:
+    45px 18px;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  text-align: center;
+
+  box-shadow:
+    0 8px 30px
+    rgba(0, 0, 0, 0.06);
+}
+
+.upload-icon {
+  margin-bottom: 15px;
+
+  font-size: 50px;
+}
+
+.upload-card h2 {
+  margin:
+    0 0 10px;
+
+  font-size: 24px;
+
+  line-height: 1.3;
+
+  color: #111827;
+}
+
+.upload-card p {
+  width: 100%;
+
+  margin:
+    0 auto 25px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   UPLOAD BUTTON
+========================================================= */
+
+.upload-button {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100%;
+
+  min-height: 56px;
+
+  padding:
+    13px 16px;
+
+  border-radius: 11px;
+
+  background: #2563eb;
+
+  color: #ffffff;
+
+  cursor: pointer;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+  user-select: none;
+}
+
+.upload-button:active {
+  transform: scale(0.98);
+}
+
+.upload-button.disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error {
+  width: 100%;
+
+  margin-top: 18px;
+
+  padding: 14px;
+
+  border-radius: 10px;
+
+  background: #fee2e2;
+
+  color: #991b1b;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading {
+  margin-top: 25px;
+
+  text-align: center;
+}
+
+.loading p {
+  margin:
+    12px 0 0;
+
+  color: #374151;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+.spinner {
+  width: 35px;
+
+  height: 35px;
+
+  margin: 0 auto;
+
+  border:
+    4px solid #e5e7eb;
+
+  border-top-color:
+    #2563eb;
+
+  border-radius: 50%;
+
+  animation:
+    spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.top-bar {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 8px;
+
+  width: 100%;
+
+  margin-bottom: 10px;
+}
+
+.secondary-button {
+  min-height: 43px;
+
+  padding:
+    9px 12px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  cursor: pointer;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 3px 12px
+    rgba(0, 0, 0, 0.05);
+}
+
+.secondary-button:active {
+  transform: scale(0.97);
+}
+
+.secondary-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+.counter {
+  flex-shrink: 0;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  color: #374151;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress {
+  width: 100%;
+
+  height: 7px;
+
+  margin-bottom: 10px;
+
+  background: #e5e7eb;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+
+  background: #2563eb;
+
+  border-radius: 20px;
+
+  transition:
+    width 0.25s ease;
+}
+
+
+/* =========================================================
+   RECORDING STATUS
+========================================================= */
+
+.recording-bar {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  width: 100%;
+
+  min-height: 44px;
+
+  margin-bottom: 10px;
+
+  padding:
+    9px 12px;
+
+  background: #111827;
+
+  border-radius: 10px;
+
+  color: #ffffff;
+}
+
+.recording-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+.recording-dot {
+  width: 8px;
+
+  height: 8px;
+
+  flex-shrink: 0;
+
+  background: #ef4444;
+
+  border-radius: 50%;
+
+  animation:
+    recordingPulse 1.2s infinite;
+}
+
+.recording-dot.paused {
+  animation: none;
+
+  opacity: 0.4;
+}
+
+@keyframes recordingPulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.timer {
+  font-family:
+    "Courier New",
+    monospace;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   CAPTION CARD
+========================================================= */
+
+.caption-card {
+  width: 100%;
+
+  min-height: 470px;
+
+  padding:
+    28px 14px;
+
+  background: #111827;
+
+  border-radius: 17px;
+
+  color: #ffffff;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  text-align: center;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================================
+   CAPTION LABEL
+========================================================= */
+
+.caption-label {
+  margin-bottom: 12px;
+
+  color: #9ca3af;
+
+  font-size: 9px;
+
+  letter-spacing: 2px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   CHADHAVA
+========================================================= */
+
+.chadhava {
+  width: 100%;
+
+  max-width: 100%;
+
+  margin-bottom: 22px;
+
+  font-family:
+    "Noto Sans Devanagari",
+    "Nirmala UI",
+    Arial,
+    sans-serif;
+
+  font-size: clamp(
+    22px,
+    6vw,
+    34px
+  );
+
+  line-height: 1.35;
+
+  font-weight: 700;
+
+  color: #93c5fd;
+
+  overflow-wrap: anywhere;
+
+  word-break: normal;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.field {
+  width: 100%;
+
+  margin-bottom: 12px;
+
+  text-align: center;
+}
+
+.field-label {
+  display: block;
+
+  margin-bottom: 3px;
+
+  font-family:
+    "Noto Sans Devanagari",
+    "Nirmala UI",
+    Arial,
+    sans-serif;
+
+  font-size: 12px;
+
+  line-height: 1.3;
+
+  color: #9ca3af;
+}
+
+
+/* =========================================================
+   SR NO
+========================================================= */
+
+.srno {
+  display: block;
+
+  font-size: 23px;
+
+  line-height: 1.3;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   GOTRA
+========================================================= */
+
+.gotra {
+  display: block;
+
+  font-family:
+    "Noto Sans Devanagari",
+    "Nirmala UI",
+    Arial,
+    sans-serif;
+
+  font-size: clamp(
+    23px,
+    6vw,
+    31px
+  );
+
+  line-height: 1.35;
+
+  color: #ffffff;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   NAME
+========================================================= */
+
+.name {
+  display: block;
+
+  width: 100%;
+
+  max-width: 100%;
+
+  font-family:
+    "Noto Sans Devanagari",
+    "Nirmala UI",
+    Arial,
+    sans-serif;
+
+  /*
+     Automatically scales according
+     to phone width.
+  */
+
+  font-size: clamp(
+    28px,
+    8vw,
+    48px
+  );
+
+  line-height: 1.35;
+
+  color: #ffffff;
+
+  overflow-wrap: anywhere;
+
+  word-break: normal;
+}
+
+
+/* =========================================================
+   CAPTION TIMER
+========================================================= */
+
+.caption-timer {
+  width: 100%;
+
+  margin-top: 9px;
+
+  padding:
+    9px 10px;
+
+  background: #ffffff;
+
+  border-radius: 9px;
+
+  text-align: center;
+
+  color: #6b7280;
+
+  font-size: 11px;
+}
+
+.caption-timer strong {
+  margin-left: 5px;
+
+  font-family:
+    "Courier New",
+    monospace;
+
+  color: #111827;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   PLAY / PAUSE
+========================================================= */
+
+.record-controls {
+  width: 100%;
+
+  margin-top: 10px;
+}
+
+.control-button {
+  width: 100%;
+
+  min-height: 54px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  color: #ffffff;
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+.control-button:active {
+  transform: scale(0.98);
+}
+
+.control-button.play {
+  background: #16a34a;
+}
+
+.control-button.pause {
+  background: #f59e0b;
+}
+
+
+/* =========================================================
+   PREVIOUS / NEXT
+========================================================= */
+
+.navigation {
+  display: flex;
+
+  width: 100%;
+
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+.nav-button {
+  flex: 1;
+
+  min-width: 0;
+
+  min-height: 58px;
+
+  padding:
+    10px 6px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 4px 14px
+    rgba(0, 0, 0, 0.06);
+}
+
+.nav-button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.nav-button.next {
+  background: #2563eb;
+
+  color: #ffffff;
+}
+
+.nav-button:disabled {
+  opacity: 0.35;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   END RECORDING
+========================================================= */
+
+.end-recording-button {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100%;
+
+  min-height: 56px;
+
+  margin-top: 10px;
+
+  padding:
+    10px 15px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #dc2626;
+
+  color: #ffffff;
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+.end-recording-button:active {
+  transform: scale(0.98);
+}
+
+
+/* =========================================================
+   SRT RESULT
+========================================================= */
+
+.srt-panel {
+  width: 100%;
+
+  margin-top: 14px;
+
+  padding: 18px;
+
+  background: #ffffff;
+
+  border:
+    1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 5px 18px
+    rgba(0, 0, 0, 0.05);
+}
+
+.srt-info {
+  text-align: center;
+
+  margin-bottom: 13px;
+}
+
+.srt-info h3 {
+  margin:
+    0 0 5px;
+
+  font-size: 19px;
+
+  color: #111827;
+}
+
+.srt-info p {
+  margin: 0;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+  color: #6b7280;
+}
+
+
+/* =========================================================
+   SRT PREVIEW
+========================================================= */
+
+.srt-preview {
+  width: 100%;
+
+  margin-bottom: 12px;
+
+  padding: 10px;
+
+  background: #f3f4f6;
+
+  border-radius: 8px;
+
+  text-align: center;
+}
+
+.srt-preview span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 10px;
+
+  color: #6b7280;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+}
+
+.srt-preview code {
+  font-family:
+    "Noto Sans Devanagari",
+    "Nirmala UI",
+    monospace;
+
+  font-size: 13px;
+
+  color: #111827;
+}
+
+
+/* =========================================================
+   DOWNLOAD
+========================================================= */
+
+.download-button {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100%;
+
+  min-height: 56px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #16a34a;
+
+  color: #ffffff;
+
+  cursor: pointer;
+
+  font-size: 17px;
+
+  font-weight: 700;
+}
+
+.download-button:active {
+  transform: scale(0.98);
+}
+
+
+/* =========================================================
+   COMPLETE MESSAGE
+========================================================= */
+
+.complete-message {
+  width: 100%;
+
+  margin-top: 13px;
+
+  padding:
+    14px 12px;
+
+  background: #dcfce7;
+
+  color: #166534;
+
+  border-radius: 11px;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  line-height: 1.5;
+}
+
+.complete-message span {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 12px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   320px - 380px
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .container {
+    padding:
+      10px 7px 25px;
+  }
+
+  .header {
+    padding:
+      13px 8px;
+  }
+
+  .header h1 {
+    font-size:
+      20px;
+  }
+
+  .header p {
+    font-size:
+      11px;
+  }
+
+  .upload-card {
+    padding:
+      35px 14px;
+  }
+
+  .upload-card h2 {
+    font-size:
+      22px;
+  }
+
+  .top-bar {
+    gap:
+      5px;
+  }
+
+  .secondary-button {
+    font-size:
+      11px;
+
+    padding:
+      8px 9px;
+  }
+
+  .counter {
+    font-size:
+      12px;
+  }
+
+  .caption-card {
+    min-height:
+      450px;
+
+    padding:
+      24px 10px;
+  }
+
+  .chadhava {
+    font-size:
+      21px;
+  }
+
+  .srno {
+    font-size:
+      21px;
+  }
+
+  .gotra {
+    font-size:
+      24px;
+  }
+
+  .name {
+    font-size:
+      29px;
+  }
+
+  .nav-button {
+    font-size:
+      14px;
+  }
+}
+
+
+/* =========================================================
+   LARGE PHONES / SMALL TABLETS
+========================================================= */
+
+@media (min-width: 600px) and (max-width: 999px) {
+
+  .container {
+    padding:
+      25px 20px 40px;
+  }
+
+  .header {
+    padding:
+      22px 15px;
+  }
+
+  .header h1 {
+    font-size:
+      28px;
+  }
+
+  .caption-card {
+    min-height:
+      540px;
+
+    padding:
+      40px 30px;
+  }
+
+  .chadhava {
+    font-size:
+      34px;
+  }
+
+  .gotra {
+    font-size:
+      30px;
+  }
+
+  .name {
+    font-size:
+      44px;
+  }
+
+  .upload-button {
+    width:
+      230px;
+
+    margin:
+      0 auto;
+  }
+}
+
+
+/* =========================================================
+   DESKTOP ONLY
+   IMPORTANT:
+   Nothing desktop-specific happens before 1000px.
+========================================================= */
+
+@media (min-width: 1000px) {
+
+  .header {
+    padding:
+      28px 20px;
+  }
+
+  .header h1 {
+    font-size:
+      32px;
+  }
+
+  .header p {
+    font-size:
+      16px;
+  }
+
+  .container {
+    padding:
+      35px 20px 60px;
+  }
+
+  .upload-card {
+    padding:
+      70px 40px;
+  }
+
+  .upload-button {
+    width:
+      auto;
+
+    min-width:
+      220px;
+
+    display:
+      inline-flex;
+  }
+
+  .caption-card {
+    min-height:
+      570px;
+
+    padding:
+      55px 45px;
+  }
+
+  .chadhava {
+    font-size:
+      42px;
+  }
+
+  .gotra {
+    font-size:
+      32px;
+  }
+
+  .name {
+    font-size:
+      54px;
+  }
+
+  .record-controls {
+    width:
+      250px;
+
+    margin-left:
+      auto;
+
+    margin-right:
+      auto;
+  }
+
+  .srt-panel {
+    display:
+      grid;
+
+    grid-template-columns:
+      1fr auto auto;
+
+    align-items:
+      center;
+
+    gap:
+      20px;
+  }
+
+  .srt-info {
+    text-align:
+      left;
+
+    margin-bottom:
+      0;
+  }
+
+  .srt-preview {
+    margin-bottom:
+      0;
+  }
+
+  .download-button {
+    width:
+      auto;
+
+    padding:
+      12px 25px;
+
+    white-space:
+      nowrap;
+  }
+}
