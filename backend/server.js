@@ -1,34 +1,47 @@
 import express from "express";
-
 import cors from "cors";
-
 import dotenv from "dotenv";
 
 import {
   getGoogleAuthUrl,
   handleGoogleCallback,
-  uploadSRT
+  uploadSRT,
 } from "./googleDrive.js";
 
 dotenv.config();
 
-const app =
-  express();
+const app = express();
+
+const PORT = process.env.PORT || 5000;
+
+const FRONTEND_URL =
+  process.env.FRONTEND_URL ||
+  "http://localhost:5173";
+
+const UPLOAD_API_KEY =
+  process.env.UPLOAD_API_KEY;
 
 
 /* =====================================================
-   MIDDLEWARE
+   SECURITY / MIDDLEWARE
 ===================================================== */
+
+app.disable("x-powered-by");
 
 app.use(
   cors({
-    origin: true
+    origin: FRONTEND_URL,
+    methods: ["GET", "POST"],
+    allowedHeaders: [
+      "Content-Type",
+      "x-api-key",
+    ],
   })
 );
 
 app.use(
   express.json({
-    limit: "10mb"
+    limit: "10mb",
   })
 );
 
@@ -37,32 +50,35 @@ app.use(
    HEALTH CHECK
 ===================================================== */
 
-app.get(
-  "/",
-  (req, res) => {
-    res.json({
-      success: true,
-
-      message:
-        "SRT Caption Backend is running."
-    });
-  }
-);
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "SRT Caption Backend is running.",
+  });
+});
 
 
 /* =====================================================
    GOOGLE AUTH
+   ONLY NEEDED FOR INITIAL OWNER SETUP
 ===================================================== */
 
-app.get(
-  "/auth/google",
-  (req, res) => {
-    const url =
-      getGoogleAuthUrl();
+app.get("/auth/google", (req, res) => {
+  try {
+    const url = getGoogleAuthUrl();
 
     res.redirect(url);
+  } catch (error) {
+    console.error(
+      "Google auth error:",
+      error.message
+    );
+
+    res.status(500).send(
+      "Google authentication could not be started."
+    );
   }
-);
+});
 
 
 /* =====================================================
@@ -73,8 +89,7 @@ app.get(
   "/oauth2callback",
   async (req, res) => {
     try {
-      const code =
-        req.query.code;
+      const code = req.query.code;
 
       if (!code) {
         return res
@@ -85,56 +100,50 @@ app.get(
       }
 
       const tokens =
-        await handleGoogleCallback(
-          code
-        );
+        await handleGoogleCallback(code);
 
       /*
        * IMPORTANT:
        *
-       * For local development we will
-       * display the refresh token.
-       *
-       * NEVER put this token in GitHub.
+       * Do NOT print the refresh token
+       * in production logs.
        */
 
-      console.log(
-        "\n================================"
-      );
+      if (tokens.refresh_token) {
+        console.log(
+          "Google Drive authorization completed."
+        );
 
-      console.log(
-        "GOOGLE REFRESH TOKEN:"
-      );
-
-      console.log(
-        tokens.refresh_token
-      );
-
-      console.log(
-        "================================\n"
-      );
+        console.log(
+          "A refresh token was received."
+        );
+      } else {
+        console.log(
+          "Google authorization completed."
+        );
+      }
 
       res.send(`
+        <!DOCTYPE html>
+
         <html>
+          <head>
+            <title>Google Drive Connected</title>
+          </head>
+
           <body
             style="
               font-family: Arial;
               padding: 40px;
+              text-align: center;
             "
           >
-            <h2>Google Drive Connected ✓</h2>
+            <h2>
+              Google Drive Connected ✓
+            </h2>
 
             <p>
-              Check your backend terminal.
-            </p>
-
-            <p>
-              The refresh token has been
-              printed there.
-            </p>
-
-            <p>
-              You can close this page.
+              You can close this window.
             </p>
           </body>
         </html>
@@ -143,7 +152,7 @@ app.get(
     } catch (error) {
       console.error(
         "OAuth callback error:",
-        error
+        error.message
       );
 
       res
@@ -157,72 +166,169 @@ app.get(
 
 
 /* =====================================================
+   API KEY PROTECTION
+===================================================== */
+
+function requireApiKey(
+  req,
+  res,
+  next
+) {
+  /*
+   * During local development, allow
+   * the API if no key has been configured.
+   */
+
+  if (!UPLOAD_API_KEY) {
+    return next();
+  }
+
+  const suppliedKey =
+    req.headers["x-api-key"];
+
+  if (
+    !suppliedKey ||
+    suppliedKey !== UPLOAD_API_KEY
+  ) {
+    return res
+      .status(401)
+      .json({
+        success: false,
+        message: "Unauthorized.",
+      });
+  }
+
+  next();
+}
+
+
+/* =====================================================
    UPLOAD SRT
 ===================================================== */
 
 app.post(
   "/api/upload-srt",
+  requireApiKey,
+
   async (req, res) => {
     try {
       const {
         fileName,
-        srtText
+        srtText,
       } = req.body;
 
-      if (!fileName) {
+
+      /* ---------------------------------------------
+         VALIDATE FILE NAME
+      --------------------------------------------- */
+
+      if (
+        !fileName ||
+        typeof fileName !== "string"
+      ) {
         return res
           .status(400)
           .json({
             success: false,
-
             message:
-              "File name is required."
+              "File name is required.",
           });
       }
 
-      if (!srtText) {
+
+      /* ---------------------------------------------
+         VALIDATE SRT
+      --------------------------------------------- */
+
+      if (
+        !srtText ||
+        typeof srtText !== "string"
+      ) {
         return res
           .status(400)
           .json({
             success: false,
-
             message:
-              "SRT content is required."
+              "SRT content is required.",
           });
       }
+
+
+      /* ---------------------------------------------
+         LIMIT SRT SIZE
+      --------------------------------------------- */
+
+      if (
+        Buffer.byteLength(
+          srtText,
+          "utf8"
+        ) > 5 * 1024 * 1024
+      ) {
+        return res
+          .status(413)
+          .json({
+            success: false,
+            message:
+              "SRT file is too large.",
+          });
+      }
+
+
+      /* ---------------------------------------------
+         BASIC SRT VALIDATION
+      --------------------------------------------- */
+
+      if (
+        !srtText.includes("-->")
+      ) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "Invalid SRT content.",
+          });
+      }
+
+
+      /* ---------------------------------------------
+         UPLOAD
+      --------------------------------------------- */
 
       const result =
         await uploadSRT({
           fileName,
-          srtText
+          srtText,
         });
 
-      res.json({
+
+      /* ---------------------------------------------
+         RESPONSE
+      --------------------------------------------- */
+
+      return res.json({
         success: true,
 
         message:
           "SRT uploaded successfully.",
 
-        file:
-          result
+        file: result,
       });
 
     } catch (error) {
+
       console.error(
         "SRT upload error:",
-        error
+        error.message
       );
 
-      res
+      return res
         .status(500)
         .json({
           success: false,
 
           message:
             "Could not upload SRT to Google Drive.",
-
-          error:
-            error.message
         });
     }
   }
@@ -230,44 +336,52 @@ app.post(
 
 
 /* =====================================================
-   SERVER
+   404 HANDLER
 ===================================================== */
 
-const PORT =
-  process.env.PORT || 5000;
-
- app.get("/api/test-drive", async (req, res) => {
-  try {
-    const result = await uploadSRT({
-      fileName: "test-srt.srt",
-
-      srtText: `1
-00:00:00,000 --> 00:00:05,000
-वत्स
-आशुतोष पारीक
-
-2
-00:00:05,000 --> 00:00:10,000
-कश्यप
-राहुल शर्मा
-`
-    });
-
-    res.json({
-      success: true,
-      message: "Google Drive upload successful!",
-      file: result
-    });
-
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+app.use(
+  (req, res) => {
+    res
+      .status(404)
+      .json({
+        success: false,
+        message:
+          "Endpoint not found.",
+      });
   }
-}); 
+);
+
+
+/* =====================================================
+   GLOBAL ERROR HANDLER
+===================================================== */
+
+app.use(
+  (
+    error,
+    req,
+    res,
+    next
+  ) => {
+    console.error(
+      "Unhandled server error:",
+      error.message
+    );
+
+    res
+      .status(500)
+      .json({
+        success: false,
+        message:
+          "Internal server error.",
+      });
+  }
+);
+
+
+/* =====================================================
+   START SERVER
+===================================================== */
 
 app.listen(
   PORT,
@@ -275,6 +389,18 @@ app.listen(
   () => {
     console.log(
       `SRT backend running on port ${PORT}`
+    );
+
+    console.log(
+      `Frontend allowed: ${FRONTEND_URL}`
+    );
+
+    console.log(
+      `Upload API protection: ${
+        UPLOAD_API_KEY
+          ? "ENABLED"
+          : "DISABLED (development)"
+      }`
     );
   }
 );

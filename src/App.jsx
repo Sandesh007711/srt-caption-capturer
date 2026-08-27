@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import * as XLSX from "xlsx";
 import "./App.css";
 
+
 /* =========================================================
    HELPERS
 ========================================================= */
@@ -353,26 +354,40 @@ async function uploadSRTToGoogleDrive(
 
   const fileName =
     (excelFileName || "chadhava-captions.xlsx")
-      .replace(/\\.(xlsx|xls)$/i, "") +
+      .replace(/\.(xlsx|xls)$/i, "") +
     ".srt";
 
   const apiBaseUrl =
     import.meta.env.VITE_API_URL ||
     "http://localhost:5000";
 
+  const uploadApiKey =
+    import.meta.env.VITE_UPLOAD_API_KEY;
+
+  if (!uploadApiKey) {
+    throw new Error(
+      "VITE_UPLOAD_API_KEY is missing. Add it to the frontend .env file and restart Vite."
+    );
+  }
+
   const response = await fetch(
-    `${apiBaseUrl}/api/upload-srt`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        fileName,
-        srtText: srt
-      })
-    }
-  );
+  `${apiBaseUrl}/api/upload-srt`,
+  {
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json",
+
+      "x-api-key":
+        import.meta.env.VITE_UPLOAD_API_KEY
+    },
+
+    body: JSON.stringify({
+      fileName,
+      srtText: srt
+    })
+  }
+);
 
   let data;
 
